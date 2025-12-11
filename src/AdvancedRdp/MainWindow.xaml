@@ -1,0 +1,91 @@
+<Window x:Class="AdvancedRdp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:local="clr-namespace:AdvancedRdp"
+        mc:Ignorable="d"
+        Title="Advanced RDP" Height="720" Width="1200"
+        Background="{StaticResource SurfaceBrush}" Foreground="{StaticResource TextBrush}"
+        WindowStartupLocation="CenterScreen">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="280" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Column="0" Background="{StaticResource PanelBrush}">
+      <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top" Margin="0 0 0 8">
+          <TextBlock Text="Advanced RDP" FontSize="20" FontWeight="Bold" Margin="0 0 0 12" />
+          <TextBlock Text="新建或编辑主机" Opacity="0.7" Margin="0 0 0 6" />
+          <StackPanel>
+            <TextBlock Text="显示名称" Margin="0 0 0 2" />
+            <TextBox x:Name="NameInput" Margin="0 0 0 8" />
+
+            <TextBlock Text="地址 (IP / 主机名)" Margin="0 0 0 2" />
+            <TextBox x:Name="AddressInput" Margin="0 0 0 8" />
+
+            <TextBlock Text="用户名" Margin="0 0 0 2" />
+            <TextBox x:Name="UserInput" Margin="0 0 0 8" />
+
+            <TextBlock Text="域 (可选)" Margin="0 0 0 2" />
+            <TextBox x:Name="DomainInput" Margin="0 0 0 8" />
+
+            <TextBlock Text="密码 (保存到系统凭据)" Margin="0 0 0 2" />
+            <PasswordBox x:Name="PasswordInput" Margin="0 0 0 12" />
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 12" VerticalAlignment="Center">
+              <CheckBox x:Name="SavePasswordCheck" Content="保存密码" IsChecked="True" />
+              <CheckBox x:Name="RedirectClipboardCheck" Content="剪贴板重定向" Margin="12 0 0 0" IsChecked="True" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 16">
+              <Button Content="保存" Click="SaveHost_Click" Width="70" />
+              <Button Content="连接" Click="Connect_Click" Margin="8 0 0 0" Width="70" />
+              <Button Content="删除" Click="DeleteHost_Click" Margin="8 0 0 0" Width="70" />
+            </StackPanel>
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Margin="0 8 0 0">
+          <TextBlock Text="已保存主机" FontWeight="Bold" Margin="0 0 0 6" />
+          <ListBox x:Name="HostList"
+                   ItemsSource="{Binding Hosts}"
+                   DisplayMemberPath="Name"
+                   SelectedItem="{Binding SelectedHost, Mode=TwoWay}"
+                   SelectionChanged="HostList_SelectionChanged"
+                   Background="{StaticResource SurfaceBrush}"
+                   BorderBrush="#1F2937"
+                   Height="220" />
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <Grid Grid.Column="1" Margin="12">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <Border Background="{StaticResource PanelBrush}" Padding="12" CornerRadius="8">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
+          <Ellipse Width="10" Height="10" Fill="#10B981" />
+          <TextBlock x:Name="StatusText" Text="就绪，未连接" VerticalAlignment="Center" />
+        </StackPanel>
+      </Border>
+
+      <Border Grid.Row="1" Background="#0B1020" CornerRadius="8" Margin="0 12 0 0">
+        <Grid>
+          <TextBlock x:Name="PlaceholderText"
+                     Text="右侧显示 RDP 会话，点击左侧连接"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Opacity="0.7" />
+          <wfi:WindowsFormsHost x:Name="RdpHost" Background="Black" />
+        </Grid>
+      </Border>
+    </Grid>
+  </Grid>
+</Window>
