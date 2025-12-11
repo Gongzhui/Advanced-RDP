@@ -201,7 +201,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         if (string.IsNullOrEmpty(password))
         {
-            StatusText.Text = "未找到密码，请输入后再试";
+            StatusText.Text = "未找到密码，请输入后重试";
             return;
         }
 

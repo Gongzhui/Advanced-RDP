@@ -6,21 +6,22 @@
         xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         xmlns:local="clr-namespace:AdvancedRdp"
         mc:Ignorable="d"
-        Title="Advanced RDP" Height="760" Width="1280"
+        Title="Advanced RDP" Height="760" Width="520"
         Background="{StaticResource PageBrush}" Foreground="{StaticResource TextBrush}"
         WindowStartupLocation="CenterScreen">
   <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="340" />
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="0" />
+    </Grid.RowDefinitions>
 
-    <Border Grid.Column="0" Background="{StaticResource CardBrush}" Padding="18" Margin="18" CornerRadius="16"
+    <Border Grid.Row="0" Background="{StaticResource CardBrush}" Padding="18" Margin="18 18 18 10" CornerRadius="16"
             BorderBrush="{StaticResource AccentBorderBrush}" BorderThickness="1">
       <DockPanel>
         <StackPanel DockPanel.Dock="Top" Margin="0 0 0 12">
           <TextBlock Text="Advanced RDP" FontSize="22" FontWeight="Bold" Margin="0 0 0 4" />
-          <TextBlock Text="轻量·安全·现代的远程桌面" Foreground="{StaticResource SubTextBrush}" Margin="0 0 0 12" />
+          <TextBlock Text="轻量、安全、现代的远程桌面客户端" Foreground="{StaticResource SubTextBrush}" Margin="0 0 0 12" />
           <Button Content="新建主机" Click="NewHost_Click" Width="100" Style="{StaticResource PrimaryButton}" />
 
           <StackPanel Margin="0 12 0 0">
@@ -40,12 +41,12 @@
             </StackPanel>
 
             <StackPanel Margin="0 0 0 8">
-              <TextBlock Text="域 (可选)" Foreground="{StaticResource SubTextBrush}" />
+              <TextBlock Text="域（可选）" Foreground="{StaticResource SubTextBrush}" />
               <TextBox x:Name="DomainInput" />
             </StackPanel>
 
             <StackPanel Margin="0 0 0 12">
-              <TextBlock Text="密码 (保存到系统凭据)" Foreground="{StaticResource SubTextBrush}" />
+              <TextBlock Text="密码（保存到系统凭据库）" Foreground="{StaticResource SubTextBrush}" />
               <PasswordBox x:Name="PasswordInput" />
             </StackPanel>
 
@@ -75,34 +76,26 @@
       </DockPanel>
     </Border>
 
-    <Grid Grid.Column="1" Margin="0 18 18 18">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
-
-      <Border Background="{StaticResource CardBrush}" Padding="16" CornerRadius="16"
-              BorderBrush="{StaticResource AccentBorderBrush}" BorderThickness="1" Margin="0 0 0 12">
-        <StackPanel>
-          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <Ellipse Width="10" Height="10" Fill="#10B981" />
-            <TextBlock x:Name="StatusText" Text="就绪，未连接" VerticalAlignment="Center" Margin="8 0 0 0" />
-          </StackPanel>
-          <TextBlock x:Name="DiagnosticText" Text="" TextWrapping="Wrap" Foreground="{StaticResource SubTextBrush}" Margin="0 6 0 0" />
-          <TextBlock x:Name="EventLogText" Text="" TextWrapping="Wrap" Foreground="{StaticResource SubTextBrush}" Margin="0 4 0 0" />
+    <Border Grid.Row="1" Background="{StaticResource CardBrush}" Padding="16" CornerRadius="16"
+            BorderBrush="{StaticResource AccentBorderBrush}" BorderThickness="1" Margin="18 0 18 18">
+      <StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Ellipse Width="10" Height="10" Fill="#10B981" />
+          <TextBlock x:Name="StatusText" Text="空闲，未连接" VerticalAlignment="Center" Margin="8 0 0 0" />
         </StackPanel>
-      </Border>
+        <TextBlock x:Name="DiagnosticText" Text="" TextWrapping="Wrap" Foreground="{StaticResource SubTextBrush}" Margin="0 6 0 0" />
+        <TextBlock x:Name="EventLogText" Text="" TextWrapping="Wrap" Foreground="{StaticResource SubTextBrush}" Margin="0 4 0 0" />
+      </StackPanel>
+    </Border>
 
-      <Border Grid.Row="1" Background="#0B1020" CornerRadius="16" BorderBrush="{StaticResource AccentBorderBrush}" BorderThickness="1">
-        <Grid>
-          <TextBlock x:Name="PlaceholderText"
-                     Text="右侧显示 RDP 会话，点击左侧连接"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     Opacity="0.6" />
-          <wfi:WindowsFormsHost x:Name="RdpHost" Background="Black" />
-        </Grid>
-      </Border>
+    <!-- Hidden host container kept for RDP control; collapsed so the window can stay compact -->
+    <Grid Grid.Row="2" Visibility="Collapsed">
+      <TextBlock x:Name="PlaceholderText"
+                 Text="RDP 会话将在此呈现，连接后将进入全屏"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Opacity="0.6" />
+      <wfi:WindowsFormsHost x:Name="RdpHost" Background="Black" />
     </Grid>
   </Grid>
 </Window>
