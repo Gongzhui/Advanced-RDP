@@ -4,10 +4,73 @@
              StartupUri="MainWindow.xaml">
   <Application.Resources>
     <ResourceDictionary>
-      <SolidColorBrush x:Key="AccentBrush" Color="#2563EB" />
-      <SolidColorBrush x:Key="PanelBrush" Color="#0F172A" />
-      <SolidColorBrush x:Key="SurfaceBrush" Color="#111827" />
-      <SolidColorBrush x:Key="TextBrush" Color="#E5E7EB" />
+      <!-- Palette -->
+      <SolidColorBrush x:Key="AccentBrush" Color="#111827" />
+      <SolidColorBrush x:Key="AccentSubtleBrush" Color="#F3F4F6" />
+      <SolidColorBrush x:Key="AccentBorderBrush" Color="#E5E7EB" />
+      <SolidColorBrush x:Key="TextBrush" Color="#111827" />
+      <SolidColorBrush x:Key="SubTextBrush" Color="#6B7280" />
+      <SolidColorBrush x:Key="CardBrush" Color="#FFFFFF" />
+      <LinearGradientBrush x:Key="PageBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#F9FAFB" Offset="0" />
+        <GradientStop Color="#EEF2FF" Offset="1" />
+      </LinearGradientBrush>
+
+      <!-- Typography -->
+      <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI Semibold" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+      </Style>
+
+      <!-- Inputs -->
+      <Style TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="#FFF" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+      </Style>
+      <Style TargetType="PasswordBox">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="#FFF" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+      </Style>
+
+      <!-- Buttons -->
+      <Style TargetType="Button">
+        <Setter Property="FontFamily" Value="Segoe UI Semibold" />
+        <Setter Property="Foreground" Value="#111827" />
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="#E5E7EB" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+      </Style>
+      <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <!-- Primary now keeps白色背景，仅描边更明显，以保持与其他按钮统一的浅色调 -->
+        <Setter Property="Background" Value="#FFFFFF" />
+        <Setter Property="Foreground" Value="#111827" />
+        <Setter Property="BorderBrush" Value="#E5E7EB" />
+        <Setter Property="BorderThickness" Value="1" />
+      </Style>
+      <Style TargetType="CheckBox">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="Margin" Value="0,0,12,0" />
+      </Style>
+
+      <Style TargetType="ListBox">
+        <Setter Property="Background" Value="#FFF" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+      </Style>
     </ResourceDictionary>
   </Application.Resources>
 </Application>
