@@ -1,0 +1,15 @@
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.GeneratedMSBuildEditorConfig.editorconfig
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.AssemblyInfoInputs.cache
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.AssemblyInfo.cs
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.csproj.CoreCompileInputs.cache
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.sourcelink.json
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\bin\Debug\net8.0\AxInteropGenerator.exe
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\bin\Debug\net8.0\AxInteropGenerator.deps.json
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\bin\Debug\net8.0\AxInteropGenerator.runtimeconfig.json
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\bin\Debug\net8.0\AxInteropGenerator.dll
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\bin\Debug\net8.0\AxInteropGenerator.pdb
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.dll
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\refint\AxInteropGenerator.dll
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.pdb
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\AxInteropGenerator.genruntimeconfig.cache
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0\ref\AxInteropGenerator.dll

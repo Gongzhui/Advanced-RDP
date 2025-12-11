@@ -1,6 +1,6 @@
 # Advanced RDP (MVP)
 
-一个极简的 Windows RDP 客户端 MVP，基于系统自带的 MsTscAx ActiveX 控件。支持为每台主机保存凭据（存入 Windows Credential Manager）、本地 JSON 配置的主机列表，右侧嵌入原生 RDP 视图。
+一个极简的 Windows RDP 客户端 MVP，基于系统自带的 MsTscAx ActiveX 控件（通过 ProgID 动态托管，无需 VS/COM 包装）。支持为每台主机保存凭据（存入 Windows Credential Manager）、本地 JSON 配置的主机列表，右侧嵌入原生 RDP 视图。
 
 ## 主要点
 - WPF (.NET 8) + MsTscAx ActiveX（系统自带），无第三方 UI 依赖。
@@ -18,8 +18,8 @@
 
 ## 构建与运行
 当前环境未安装 .NET SDK（仅有 runtime），需要先安装 SDK：
-1) 安装 [.NET 8 SDK](https://dotnet.microsoft.com/download).
-2) 在 VS 或命令行打开 `AdvancedRdp.sln`。命令行构建：
+1) 安装 [.NET 8 SDK](https://dotnet.microsoft.com/download)（已安装可忽略）。
+2) 命令行构建/运行：
    ```powershell
    dotnet build AdvancedRdp.sln
    dotnet run --project src/AdvancedRdp/AdvancedRdp.csproj

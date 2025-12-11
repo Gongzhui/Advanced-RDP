@@ -1,0 +1,5 @@
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0-windows10.0.19041.0\AxInteropGenerator.GeneratedMSBuildEditorConfig.editorconfig
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0-windows10.0.19041.0\AxInteropGenerator.AssemblyInfoInputs.cache
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0-windows10.0.19041.0\AxInteropGenerator.AssemblyInfo.cs
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0-windows10.0.19041.0\AxInteropGenerator.csproj.CoreCompileInputs.cache
+D:\Students\CYS\Advanced-RDP\tools\AxInteropGenerator\obj\Debug\net8.0-windows10.0.19041.0\AxInteropGenerator.sourcelink.json

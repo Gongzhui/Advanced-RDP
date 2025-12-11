@@ -1,11 +1,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json;
+using System.Reflection;
 using System.Windows;
-using AxMSTSCLib;
-using MSTSCLib;
+using AdvancedRdp.Controls;
 using AdvancedRdp.Models;
 using AdvancedRdp.Services;
 
@@ -15,7 +12,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 {
     private readonly CredentialService _credentialService;
     private readonly HostStore _hostStore;
-    private AxMsRdpClient9NotSafeForScripting? _rdp;
+    private RdpAxHost? _rdpControl;
+    private dynamic? _rdp;
 
     public ObservableCollection<HostEntry> Hosts { get; } = new();
 
@@ -194,21 +192,22 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _rdp.Server = entry.Address;
             _rdp.UserName = entry.Username;
             _rdp.Domain = entry.Domain;
-            _rdp.AdvancedSettings9.RDPPort = 3389;
-            _rdp.AdvancedSettings9.RedirectClipboard = entry.RedirectClipboard;
-            _rdp.AdvancedSettings9.SmartSizing = true;
             _rdp.ColorDepth = 32;
             _rdp.DesktopWidth = entry.DesktopWidth;
             _rdp.DesktopHeight = entry.DesktopHeight;
 
-            if (_rdp.GetOcx() is IMsTscNonScriptable nonScriptable)
+            if (TryGetAdvancedSettings(out var adv))
             {
-                nonScriptable.ClearTextPassword = password;
+                adv.RDPPort = 3389;
+                adv.RedirectClipboard = entry.RedirectClipboard;
+                adv.SmartSizing = true;
             }
 
+            SetClearTextPassword(_rdp, password);
             _rdp.Connect();
+            StatusText.Text = "正在连接...";
         }
-        catch (COMException ex)
+        catch (Exception ex)
         {
             StatusText.Text = $"连接失败: {ex.Message}";
             PlaceholderText.Visibility = Visibility.Visible;
@@ -219,27 +218,78 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (_rdp != null) return;
 
-        _rdp = new AxMsRdpClient9NotSafeForScripting();
-        _rdp.BeginInit();
-        RdpHost.Child = _rdp;
-        _rdp.EndInit();
-
-        _rdp.OnConnected += (_, _) => Dispatcher.Invoke(() => StatusText.Text = "已连接");
-        _rdp.OnDisconnected += (_, args) => Dispatcher.Invoke(() =>
+        var type = Type.GetTypeFromProgID("MsRdpClient9NotSafeForScripting");
+        if (type == null)
         {
-            StatusText.Text = $"已断开 (Code {args.discReason})";
-            PlaceholderText.Visibility = Visibility.Visible;
-        });
-        _rdp.OnFatalError += (_, args) => Dispatcher.Invoke(() => StatusText.Text = $"致命错误: {args.errorCode}");
-        _rdp.OnLogonError += (_, args) => Dispatcher.Invoke(() => StatusText.Text = $"登录错误: {args.lError}");
-        _rdp.OnWarning += (_, args) => Dispatcher.Invoke(() => StatusText.Text = $"警告: {args.warningCode}");
+            StatusText.Text = "未找到 RDP ActiveX 控件";
+            return;
+        }
+
+        var clsid = type.GUID.ToString("B");
+        _rdpControl = new RdpAxHost(clsid);
+        _rdpControl.BeginInit();
+        RdpHost.Child = _rdpControl;
+        _rdpControl.EndInit();
+
+        _rdp = _rdpControl.OcxInstance;
     }
 
     private void DisconnectIfNeeded()
     {
-        if (_rdp is { Connected: 1 })
+        if (_rdp != null)
         {
-            _rdp.Disconnect();
+            try
+            {
+                var connected = (int)_rdp.Connected;
+                if (connected == 1)
+                {
+                    _rdp.Disconnect();
+                }
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+    }
+
+    private bool TryGetAdvancedSettings(out dynamic adv)
+    {
+        adv = null!;
+        if (_rdp == null) return false;
+        try
+        {
+            adv = _rdp.AdvancedSettings9;
+            return adv != null;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private void SetClearTextPassword(dynamic rdp, string password)
+    {
+        try
+        {
+            rdp.GetType().InvokeMember("ClearTextPassword", BindingFlags.SetProperty, null, rdp, new object[] { password });
+            return;
+        }
+        catch
+        {
+            // ignore and try advanced settings
+        }
+
+        try
+        {
+            if (TryGetAdvancedSettings(out var adv))
+            {
+                adv.GetType().InvokeMember("ClearTextPassword", BindingFlags.SetProperty, null, adv, new object[] { password });
+            }
+        }
+        catch
+        {
+            // ignore
         }
     }
 }
