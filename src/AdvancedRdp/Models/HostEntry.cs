@@ -11,6 +11,7 @@ public class HostEntry
     public int DesktopWidth { get; set; } = 1280;
     public int DesktopHeight { get; set; } = 720;
     public bool RedirectClipboard { get; set; } = true;
+    public bool FullScreen { get; set; } = true;
 
     [JsonIgnore]
     public string CredentialKey => $"advancedrdp:{Name}";

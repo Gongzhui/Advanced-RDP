@@ -1,15 +1,22 @@
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.IO;
 
 namespace AdvancedRdp.Services;
 
 public class CredentialService
 {
     private readonly string _applicationName;
+    private readonly string _secretFile;
 
     public CredentialService(string applicationName)
     {
         _applicationName = applicationName;
+        var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), applicationName);
+        Directory.CreateDirectory(appDir);
+        _secretFile = Path.Combine(appDir, "secrets.json");
     }
 
     public void SavePassword(string key, string password)
@@ -31,7 +38,7 @@ public class CredentialService
         {
             if (!NativeMethods.CredWrite(ref credential, 0))
             {
-                throw new InvalidOperationException($"CredWrite failed: {Marshal.GetLastWin32Error()}");
+                // fall back to DPAPI store; still try to persist locally
             }
         }
         finally
@@ -41,6 +48,8 @@ public class CredentialService
                 Marshal.FreeCoTaskMem(credential.CredentialBlob);
             }
         }
+
+        SaveProtected(key, password);
     }
 
     public string? GetPassword(string key)
@@ -65,15 +74,80 @@ public class CredentialService
         {
             NativeMethods.CredFree(credPtr);
         }
+
+        // fallback
+        return ReadProtected(key);
     }
 
     public void DeletePassword(string key)
     {
         var target = BuildTarget(key);
         NativeMethods.CredDelete(target, NativeMethods.CRED_TYPE_GENERIC, 0);
+        DeleteProtected(key);
     }
 
     private string BuildTarget(string key) => $"{_applicationName}/{key}";
+
+    private void SaveProtected(string key, string password)
+    {
+        try
+        {
+            var map = LoadProtected();
+            var cipher = ProtectedData.Protect(Encoding.UTF8.GetBytes(password), null, DataProtectionScope.CurrentUser);
+            map[key] = Convert.ToBase64String(cipher);
+            File.WriteAllText(_secretFile, JsonSerializer.Serialize(map));
+        }
+        catch
+        {
+            // ignore
+        }
+    }
+
+    private string? ReadProtected(string key)
+    {
+        try
+        {
+            var map = LoadProtected();
+            if (!map.TryGetValue(key, out var b64)) return null;
+            var cipher = Convert.FromBase64String(b64);
+            var plain = ProtectedData.Unprotect(cipher, null, DataProtectionScope.CurrentUser);
+            return Encoding.UTF8.GetString(plain);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private void DeleteProtected(string key)
+    {
+        try
+        {
+            var map = LoadProtected();
+            if (map.Remove(key))
+            {
+                File.WriteAllText(_secretFile, JsonSerializer.Serialize(map));
+            }
+        }
+        catch
+        {
+            // ignore
+        }
+    }
+
+    private Dictionary<string, string> LoadProtected()
+    {
+        if (!File.Exists(_secretFile)) return new Dictionary<string, string>();
+        try
+        {
+            var json = File.ReadAllText(_secretFile);
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? new Dictionary<string, string>();
+        }
+        catch
+        {
+            return new Dictionary<string, string>();
+        }
+    }
 
     private static class NativeMethods
     {

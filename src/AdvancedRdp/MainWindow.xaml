@@ -20,6 +20,9 @@
         <StackPanel DockPanel.Dock="Top" Margin="0 0 0 8">
           <TextBlock Text="Advanced RDP" FontSize="20" FontWeight="Bold" Margin="0 0 0 12" />
           <TextBlock Text="新建或编辑主机" Opacity="0.7" Margin="0 0 0 6" />
+          <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+            <Button Content="新建主机" Click="NewHost_Click" Width="80" />
+          </StackPanel>
           <StackPanel>
             <TextBlock Text="显示名称" Margin="0 0 0 2" />
             <TextBox x:Name="NameInput" Margin="0 0 0 8" />
@@ -39,6 +42,7 @@
             <StackPanel Orientation="Horizontal" Margin="0 0 0 12" VerticalAlignment="Center">
               <CheckBox x:Name="SavePasswordCheck" Content="保存密码" IsChecked="True" />
               <CheckBox x:Name="RedirectClipboardCheck" Content="剪贴板重定向" Margin="12 0 0 0" IsChecked="True" />
+              <CheckBox x:Name="FullScreenCheck" Content="全屏" Margin="12 0 0 0" IsChecked="True" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0 0 0 16">
@@ -46,10 +50,10 @@
               <Button Content="连接" Click="Connect_Click" Margin="8 0 0 0" Width="70" />
               <Button Content="删除" Click="DeleteHost_Click" Margin="8 0 0 0" Width="70" />
             </StackPanel>
-          </StackPanel>
-        </StackPanel>
+      </StackPanel>
+    </StackPanel>
 
-        <StackPanel DockPanel.Dock="Bottom" Margin="0 8 0 0">
+    <StackPanel DockPanel.Dock="Bottom" Margin="0 8 0 0">
           <TextBlock Text="已保存主机" FontWeight="Bold" Margin="0 0 0 6" />
           <ListBox x:Name="HostList"
                    ItemsSource="{Binding Hosts}"
@@ -70,9 +74,13 @@
       </Grid.RowDefinitions>
 
       <Border Background="{StaticResource PanelBrush}" Padding="12" CornerRadius="8">
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-          <Ellipse Width="10" Height="10" Fill="#10B981" />
-          <TextBlock x:Name="StatusText" Text="就绪，未连接" VerticalAlignment="Center" Margin="12 0 0 0" />
+        <StackPanel>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Ellipse Width="10" Height="10" Fill="#10B981" />
+            <TextBlock x:Name="StatusText" Text="就绪，未连接" VerticalAlignment="Center" Margin="12 0 0 0" />
+          </StackPanel>
+          <TextBlock x:Name="DiagnosticText" Text="" TextWrapping="Wrap" Opacity="0.8" Margin="0 6 0 0" />
+          <TextBlock x:Name="EventLogText" Text="" TextWrapping="Wrap" Opacity="0.8" Margin="0 4 0 0" />
         </StackPanel>
       </Border>
 
