@@ -238,10 +238,20 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 adv.SmartSizing = true;
                 adv.EnableCredSspSupport = true; // enable NLA/CredSSP
                 adv.NegotiateSecurityLayer = true;
-                adv.AuthenticationLevel = 2; // required
+                adv.AuthenticationLevel = 0; // 0 = no auth prompt (ignore cert warnings)
                 adv.EnableAutoReconnect = true;
                 adv.ConnectToServerConsole = false;
                 adv.DisplayConnectionBar = entry.FullScreen;
+                TrySet(adv, "PromptForCredentials", false);
+                TrySet(adv, "PromptForCredentialsOnClient", false);
+            }
+
+            // Best effort to silence cert warnings for non-scriptable layer as well
+            var ocx = _rdpControl?.OcxInstance;
+            if (ocx != null)
+            {
+                TrySet(ocx, "PromptForCredentials", false);
+                TrySet(ocx, "PromptForCredentialsOnClient", false);
             }
 
             SetClearTextPassword(_rdp, password);
@@ -556,6 +566,18 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _eventLog.AppendLine($"[{DateTime.Now:HH:mm:ss}] {message}");
         EventLogText.Text = _eventLog.ToString();
+    }
+
+    private void TrySet(object target, string propertyName, object value)
+    {
+        try
+        {
+            target.GetType().InvokeMember(propertyName, BindingFlags.SetProperty, null, target, new[] { value });
+        }
+        catch
+        {
+            // ignore best-effort setters
+        }
     }
 
     private void TryFillSavedPassword(HostEntry entry)
