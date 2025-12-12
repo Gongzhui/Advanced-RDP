@@ -1,0 +1,20 @@
+# Build outputs
+bin/
+obj/
+dist/
+
+# Debug files
+*.pdb
+
+# User-specific files
+*.user
+*.suo
+.vs/
+
+# IDE settings
+.idea/
+*.DotSettings.user
+
+# OS files
+Thumbs.db
+.DS_Store
