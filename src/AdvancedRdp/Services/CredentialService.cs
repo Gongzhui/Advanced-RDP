@@ -57,7 +57,7 @@ public class CredentialService
         var target = BuildTarget(key);
         if (!NativeMethods.CredRead(target, NativeMethods.CRED_TYPE_GENERIC, 0, out var credPtr))
         {
-            return null;
+            return ReadProtected(key);
         }
 
         try
@@ -74,9 +74,6 @@ public class CredentialService
         {
             NativeMethods.CredFree(credPtr);
         }
-
-        // fallback
-        return ReadProtected(key);
     }
 
     public void DeletePassword(string key)

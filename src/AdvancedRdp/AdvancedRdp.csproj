@@ -7,6 +7,17 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <RepoRoot>$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', 'AdvancedRdp.sln'))\</RepoRoot>
   </PropertyGroup>
 
+  <Target Name="CopyBuildArtifactsToRepoRoot" AfterTargets="Build" Condition="'$(RepoRoot)' != ''">
+    <ItemGroup>
+      <RootArtifactFiles Include="$(TargetDir)*"
+                         Exclude="$(TargetDir)*.pdb;$(TargetDir)apphost.exe" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(RootArtifactFiles)"
+          DestinationFiles="@(RootArtifactFiles->'$(RepoRoot)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="false" />
+  </Target>
 </Project>
