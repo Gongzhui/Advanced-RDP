@@ -1,20 +1,17 @@
-# Build outputs
+# MyGo build output
+/build/
+/.mygo/
+mygo_windows_*.syso
+
+# Old .NET build output (1.x)
 bin/
 obj/
 dist/
-
-# Debug files
 *.pdb
 
-# User-specific files
-*.user
-*.suo
+# Editors and OS
 .vs/
-
-# IDE settings
 .idea/
-*.DotSettings.user
-
-# OS files
+*.user
 Thumbs.db
 .DS_Store
