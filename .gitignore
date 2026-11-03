@@ -3,7 +3,7 @@
 /.mygo/
 mygo_windows_*.syso
 
-# Old .NET build output (1.x)
+# Old .NET build output (0.x)
 bin/
 obj/
 dist/
